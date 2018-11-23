@@ -47,6 +47,12 @@ public class Junit5Test {
 		System.out.println("TestJunit5.afterEach()");
 	}
 
+	@AfterEach
+	public void afterEach(TestInfo testInfo) {
+		System.out.println(String.format("TestJunit5.afterEach() Name[%s] Tag:[%s]", testInfo.getDisplayName(),
+				testInfo.getTags()));
+	}
+
 	@AfterAll
 	public static void afterAll() {
 		System.out.println("TestJunit5.afterAll()");
@@ -78,14 +84,14 @@ public class Junit5Test {
 	}
 
 	@Test
-	 @DisplayName("╯°□°）╯")
-	 public void test0() {
-		 
-	 }
-	
+	@DisplayName("╯°□°）╯")
+	public void test0() {
+
+	}
+
 	@Test
-	 @DisplayName(" 😱   ")
-	 public void test1() {
-		 
-	 }
+	@DisplayName(" 😱   ")
+	public void test1() {
+
+	}
 }
