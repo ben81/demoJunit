@@ -17,7 +17,7 @@ import org.junit.jupiter.api.condition.EnabledOnJre;
 
 
 
-public class EnableGeneral {
+public class EnableGeneralTest {
 	
 	@Test // Static JavaScript expression.
 	@EnabledIf("2 * 3 == 6")

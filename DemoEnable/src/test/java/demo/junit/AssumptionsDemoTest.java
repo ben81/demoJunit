@@ -16,7 +16,7 @@ import org.junit.jupiter.api.condition.OS;
 import org.junit.runners.MethodSorters;
 
 
-public class AssumptionsDemo {
+public class AssumptionsDemoTest {
 
     @Test
     void testOnlyOnCiServer() {
