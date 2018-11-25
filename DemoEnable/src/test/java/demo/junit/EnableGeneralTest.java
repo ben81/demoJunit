@@ -9,7 +9,9 @@ import static org.junit.jupiter.api.condition.JRE.JAVA_9;
 import java.time.LocalDate;
 
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestReporter;
 import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.api.condition.DisabledOnJre;
 import org.junit.jupiter.api.condition.EnabledIf;
@@ -27,8 +29,9 @@ public class EnableGeneralTest {
 
 	@RepeatedTest(10) // Dynamic JavaScript expression.
 	@DisabledIf("Math.random() < 0.314159")
-	public void mightNotBeExecuted() {
-	    // ...
+	public void mightNotBeExecuted (RepetitionInfo info, TestReporter report) {
+	    report.publishEntry("current", ""+info.getCurrentRepetition());
+	    report.publishEntry("total", ""+info.getTotalRepetitions());
 	}
 
 	@Test // Regular expression testing bound system property.
