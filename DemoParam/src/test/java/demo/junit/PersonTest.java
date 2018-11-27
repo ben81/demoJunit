@@ -8,6 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.time.LocalDate;
 
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.aggregator.AggregateWith;
@@ -17,10 +19,13 @@ import org.junit.jupiter.params.provider.CsvSource;
 
 import demo.junit.Person.Gender;
 
-public class Agregation2Test {
+public class PersonTest {
 
-	@ParameterizedTest
-	@CsvSource({ "Jane, Doe, F, 1990-05-20", "John, Doe, M, 1990-10-22" })
+
+	@DisplayName("[[testWithArgumentsAccessor]]")
+	@ParameterizedTest(name = "{index} => {0}, {1} X {3} Y {2}")
+	@CsvSource({ "Jane, Doe, F, 1990-05-20",
+		"John, Doe, M, 1990-10-22" })
 	public void testWithArgumentsAccessor(ArgumentsAccessor arguments) {
 		Person person = new Person(arguments.getString(0), arguments.getString(1), arguments.get(2, Gender.class),
 				arguments.get(3, LocalDate.class));
@@ -35,7 +40,8 @@ public class Agregation2Test {
 	}
 
 	@ParameterizedTest
-	@CsvSource({ "Jane, Doe, F, 1990-05-20", "John, Doe, M, 1990-10-22" })
+	@CsvSource({ "Jane, Doe, F, 1990-05-20",
+		"John, Doe, M, 1990-10-22" })
 	public void testWithArgumentsAggregator(@AggregateWith(PersonAggregator.class) Person person) {
 		if (person.getFirstName().equals("Jane")) {
 			assertEquals(Gender.F, person.getGender());
@@ -46,10 +52,9 @@ public class Agregation2Test {
 		assertEquals(1990, person.getDateOfBirth().getYear());
 	}
 
-	
-	
 	@ParameterizedTest
-	@CsvSource({ "Jane, Doe, F, 1990-05-20", "John, Doe, M, 1990-10-22" })
+	@CsvSource({ "Jane, Doe, F, 1990-05-20", 
+		"John, Doe, M, 1990-10-22" })
 	public void testWithArgumentsAggregator2(@CsvToPerson Person person) {
 		if (person.getFirstName().equals("Jane")) {
 			assertEquals(Gender.F, person.getGender());
@@ -60,18 +65,18 @@ public class Agregation2Test {
 		assertEquals(1990, person.getDateOfBirth().getYear());
 	}
 	
-	public static class PersonAggregator implements ArgumentsAggregator {
+	@Retention(RetentionPolicy.RUNTIME)
+	@Target(ElementType.PARAMETER)
+	@AggregateWith(PersonAggregator.class)
+	public static @interface CsvToPerson {
+	}
+	
+	public static  class PersonAggregator implements ArgumentsAggregator {
 		@Override
 		public Person aggregateArguments(ArgumentsAccessor arguments, ParameterContext context) {
 			return new Person(arguments.getString(0), arguments.getString(1), arguments.get(2, Gender.class),
 					arguments.get(3, LocalDate.class));
 		}
-	}
-	
-	@Retention(RetentionPolicy.RUNTIME)
-	@Target(ElementType.PARAMETER)
-	@AggregateWith(PersonAggregator.class)
-	public static @interface CsvToPerson {
 	}
 
 }
