@@ -20,7 +20,7 @@ import org.junit.jupiter.api.TestInstance.Lifecycle;
 @TestInstance(Lifecycle.PER_CLASS)
 @DisplayName("TestInfo Demo")
 @Tag("t1")
-public class Junit5Test {
+public class Junit5Test implements TestInterface {
 
 	public Junit5Test(TestInfo testInfo) {
 		System.out.println(testInfo.getDisplayName());
@@ -94,4 +94,12 @@ public class Junit5Test {
 	public void test1() {
 
 	}
+	
+		
+	@MyAnnotation
+	@DisplayName("اختبار")
+	public void test2() {
+		
+	}
+	
 }
